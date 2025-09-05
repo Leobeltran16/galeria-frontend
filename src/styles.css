@@ -1,0 +1,39 @@
+:root{
+  --bg:#0b0b0b; --card:#121212; --accent:#c90c0f; --text:#fff;
+}
+*{ box-sizing:border-box }
+body{ margin:0; font-family:system-ui,Segoe UI,Roboto,Inter,sans-serif; background:#000 url('/assets/prism1.png') repeat; color:var(--text) }
+.container{ max-width:1000px; margin:40px auto; padding:0 16px }
+h1{ text-align:center; margin:18px 0 22px }
+
+.form{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:18px }
+.form input[type="text"]{ padding:.6rem .8rem; border-radius:10px; border:1px solid #333; background:#1a1a1a; color:#ddd; min-width:240px }
+.form input[type="file"]{ color:#ddd }
+.form button{ padding:.6rem 1rem; border-radius:10px; border:none; background:var(--accent); color:#fff; font-weight:700; cursor:pointer }
+
+.grid{
+  display:grid; gap:16px;
+  grid-template-columns:repeat(1,minmax(0,1fr));
+}
+@media (min-width:620px){ .grid{ grid-template-columns:repeat(2,1fr) } }
+@media (min-width:980px){ .grid{ grid-template-columns:repeat(3,1fr) } }
+
+.card{
+  background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:14px; overflow:hidden;
+  box-shadow:0 10px 24px rgba(0,0,0,.4);
+}
+.card img{
+  display:block; width:100%;
+  aspect-ratio:1/1;          /* cuadrado: NO pixelea, no se estira */
+  object-fit:contain;        /* nítido para iconos/fotos */
+  background:#0b0b0b;
+  padding:8px;
+}
+.card figcaption{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:10px 12px; font-size:.95rem;
+}
+.card button{
+  border:none; background:#2a2a2a; color:#fff; border-radius:8px; padding:.4rem .6rem; cursor:pointer;
+}
+.card button:hover{ background:#3a3a3a }

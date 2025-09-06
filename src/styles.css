@@ -5,16 +5,7 @@
 /* ===========================
    Base
    =========================== */
-body{
-  margin: 0;
-  font-family: system-ui, Segoe UI, Roboto, Inter, sans-serif;
-  line-height: 1.45;
-  color: var(--text);
-  background:
-    radial-gradient(1200px 800px at 12% -10%, rgba(255,255,255,0.04) 0, rgba(0,0,0,0) 60%),
-    radial-gradient(1000px 600px at 100% 0%, rgba(255,255,255,0.03) 0, rgba(0,0,0,0) 60%),
-    var(--bg);
-}
+body{ margin:0; font-family:system-ui,Segoe UI,Roboto,Inter,sans-serif; background:#000 url('/assets/prism1.png') repeat; color:var(--text) }
 .container{ max-width:1000px; margin:40px auto; padding:0 16px }
 h1{ text-align:center; margin:18px 0 22px }
 

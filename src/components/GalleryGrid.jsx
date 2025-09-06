@@ -1,31 +1,70 @@
-import React from "react";
-import { api } from "../services/api";
+import { useEffect, useState } from "react";
+import { getImages } from "../services/api";
 
-export default function GalleryGrid({ items, setItems }) {
-  const handleDelete = async (id) => {
-    if (!confirm("¿Eliminar imagen?")) return;
-    await api.delete(`/api/images/${id}`);
-    setItems((prev) => prev.filter((i) => i._id !== id));
-  };
+export default function GalleryGrid() {
+  const [items, setItems] = useState([]);   // siempre un array
+  const [next, setNext] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  async function load(first = false) {
+    try {
+      setError("");
+      setLoading(true);
+      const data = await getImages(first ? null : next);
+      if (first) setItems(Array.isArray(data.images) ? data.images : []);
+      else setItems(prev => [...prev, ...(Array.isArray(data.images) ? data.images : [])]);
+      setNext(data.next || null);
+    } catch (e) {
+      console.error("getImages error:", e);
+      setError(e?.message || "No se pudo cargar la galería");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    load(true);
+  }, []);
+
+  const safeItems = Array.isArray(items) ? items : [];
 
   return (
-    <div className="grid">
-      {items.map((img) => (
-        <figure key={img._id} className="card">
-          {/* NITIDEZ: cuadrado, contain */}
+    <section>
+      {error && (
+        <div style={{ background: "#fee", color: "#900", padding: 8, borderRadius: 8, marginBottom: 12 }}>
+          {error}
+        </div>
+      )}
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+          gap: 12,
+          alignItems: "start",
+        }}
+      >
+        {safeItems.map(img => (
           <img
-            src={`${api.defaults.baseURL}${img.url}`}
-            alt={img.titulo || "imagen"}
-            width="1024"
-            height="1024"
+            key={img.public_id || img.url}
+            src={img.url}
+            alt={img.public_id || "image"}
+            style={{ width: "100%", borderRadius: 8, display: "block" }}
             loading="lazy"
           />
-          <figcaption>
-            <strong>{img.titulo || "Sin título"}</strong>
-            <button onClick={() => handleDelete(img._id)}>Borrar</button>
-          </figcaption>
-        </figure>
-      ))}
-    </div>
+        ))}
+      </div>
+
+      <div style={{ marginTop: 12 }}>
+        {loading && <span>Cargando...</span>}
+        {!loading && !safeItems.length && !error && <span>No hay imágenes aún.</span>}
+        {next && !loading && (
+          <button onClick={() => load(false)}>
+            Cargar más
+          </button>
+        )}
+      </div>
+    </section>
   );
 }

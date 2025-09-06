@@ -1,46 +1,35 @@
-import React, { useState } from "react";
-import api from "../services/api";
+import { useState } from "react";
+import { uploadImage } from "../services/api";
 
-const UploadForm = ({ onUpload }) => {
+export default function UploadForm({ onUploaded }) {
   const [file, setFile] = useState(null);
-  const [titulo, setTitulo] = useState("");
   const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  async function handleUpload() {
     if (!file) return;
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("titulo", titulo);
-
+    setLoading(true);
+    setMsg("");
     try {
-      setLoading(true);
-      const { data } = await api.post("/images", formData);
-      onUpload(data);
+      const { url } = await uploadImage(file);
+      setMsg("Imagen subida");
+      onUploaded?.(url);  // el padre puede refrescar la grilla
       setFile(null);
-      setTitulo("");
-    } catch (error) {
-      console.error("Error al subir imagen:", error);
+    } catch (e) {
+      console.error("uploadImage error:", e);
+      setMsg(e?.message || "Error subiendo imagen");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Título"
-        value={titulo}
-        onChange={(e) => setTitulo(e.target.value)}
-      />
-      <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-      <button type="submit" disabled={loading}>
+    <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+      <input type="file" accept="image/*" onChange={e => setFile(e.target.files[0] || null)} />
+      <button disabled={!file || loading} onClick={handleUpload}>
         {loading ? "Subiendo..." : "Subir imagen"}
       </button>
-    </form>
+      {msg && <small>{msg}</small>}
+    </div>
   );
-};
-
-export default UploadForm;
+}

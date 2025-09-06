@@ -1,20 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { api } from "./services/api";
 import UploadForm from "./components/UploadForm";
 import GalleryGrid from "./components/GalleryGrid";
 
 export default function App() {
-  const [items, setItems] = useState([]);
-
-  useEffect(() => {
-    api.get("/api/images").then(({ data }) => setItems(data));
-  }, []);
-
+  // Si querés refrescar la grilla tras subir, podés manejar un "tick" en estado y pasarlo a GalleryGrid.
   return (
-    <main className="container">
+    <main style={{ padding: 16 }}>
       <h1>Galería de Imágenes</h1>
-      <UploadForm onUploaded={(img) => setItems((prev) => [img, ...prev])} />
-      <GalleryGrid items={items} setItems={setItems} />
+      <UploadForm />
+      <hr style={{ margin: "16px 0" }} />
+      <GalleryGrid />
     </main>
   );
 }

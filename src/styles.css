@@ -1,42 +1,96 @@
+/* === Variables (sin cambios de color/fondo) === */
 :root{
-  --bg:#0b0b0b; --card:#121212; --accent:#c90c0f; --text:#fff;
+  --bg:#0b0b0b; 
+  --card:#121212; 
+  --accent:#c90c0f; 
+  --text:#ffffff; 
+  --muted:#c9c9c9;
 }
+
+/* === Base/Reset === */
 *{ box-sizing:border-box }
-/* ===========================
-   Base
-   =========================== */
-body{ margin:0; font-family:system-ui,Segoe UI,Roboto,Inter,sans-serif; background:#000; color:var(--text) }
-.container{ max-width:1000px; margin:40px auto; padding:0 16px }
-h1{ text-align:center; margin:18px 0 22px }
-
-.form{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:18px }
-.form input[type="text"]{ padding:.6rem .8rem; border-radius:10px; border:1px solid #333; background:#1a1a1a; color:#ddd; min-width:240px }
-.form input[type="file"]{ color:#ddd }
-.form button{ padding:.6rem 1rem; border-radius:10px; border:none; background:var(--accent); color:#fff; font-weight:700; cursor:pointer }
-
-.grid{
-  display:grid; gap:16px;
-  grid-template-columns:repeat(1,minmax(0,1fr));
+html{ scroll-behavior:smooth; text-size-adjust:100% }
+body{
+  margin:0;
+  color:var(--text);
+  font-family: Inter, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size:clamp(15px, 0.9vw + 12px, 18px);
+  line-height:1.6;
+  letter-spacing:.2px;
+  text-align:center; /* centrado de texto global */
+  /* Tu FONDO queda como lo tenías en tu otro CSS (no lo toco aquí) */
 }
-@media (min-width:620px){ .grid{ grid-template-columns:repeat(2,1fr) } }
-@media (min-width:980px){ .grid{ grid-template-columns:repeat(3,1fr) } }
+
+/* === Centrar TODO el layout === */
+/* Si estás en React, #root es hijo directo del body: lo centramos y limitamos ancho */
+body > *{
+  width:min(1100px, 100% - 32px);
+  margin-inline:auto;
+}
+
+/* === Tipografía agradable === */
+h1,h2,h3,h4,h5,h6{ 
+  margin:0 0 .75rem; 
+  line-height:1.15;
+}
+h1{ font-weight:800; font-size:clamp(2.2rem, 5vw, 3.5rem) }
+h2{ font-weight:700; font-size:clamp(1.6rem, 3.5vw, 2.2rem) }
+h3{ font-weight:600; font-size:clamp(1.25rem, 2.5vw, 1.6rem) }
+p{ margin:.5rem 0 1rem; color:var(--muted) }
+strong,b{ color:var(--text) }
+
+/* === Links === */
+a{ color:var(--text); text-decoration:none }
+a:hover{
+  color:var(--accent);
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+/* === Secciones y bloques === */
+section{
+  padding:2rem 0;
+  display:grid;
+  gap:1rem;
+  justify-items:center; /* centra el contenido interno */
+}
 
 .card{
-  background:var(--card); border:1px solid rgba(255,255,255,.08); border-radius:14px; overflow:hidden;
-  box-shadow:0 10px 24px rgba(0,0,0,.4);
+  background:var(--card);
+  border:1px solid rgba(255,255,255,.06);
+  padding:1.25rem;
+  border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
 }
-.card img{
-  display:block; width:100%;
-  aspect-ratio:1/1;          /* cuadrado: NO pixelea, no se estira */
-  object-fit:contain;        /* nítido para iconos/fotos */
-  background:#0b0b0b;
-  padding:8px;
+
+/* === Navbar centrada (si la usás) === */
+.navbar{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:1rem;
+  padding:.75rem 0;
+  background-color:rgba(0,0,0,.5);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  backdrop-filter:blur(6px);
 }
-.card figcaption{
-  display:flex; align-items:center; justify-content:space-between; gap:10px;
-  padding:10px 12px; font-size:.95rem;
+.navbar a{ padding:.35rem .65rem; border-radius:10px }
+.navbar a:hover{ background:rgba(201,12,15,.12) }
+
+/* === Media responsiva === */
+img,video{ 
+  display:block; 
+  max-width:100%; 
+  height:auto; 
+  margin-inline:auto; 
+  border-radius:12px;
 }
-.card button{
-  border:none; background:#2a2a2a; color:#fff; border-radius:8px; padding:.4rem .6rem; cursor:pointer;
+
+/* === Utilidades === */
+.center{ text-align:center }
+.stack{ display:grid; gap:1rem }
+.spacer{ height:1.5rem }
+
+@media (min-width:768px){
+  section{ padding:3rem 0 }
 }
-.card button:hover{ background:#3a3a3a }

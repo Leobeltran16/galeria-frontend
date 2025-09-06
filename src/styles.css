@@ -5,7 +5,7 @@
 /* ===========================
    Base
    =========================== */
-body{ margin:0; font-family:system-ui,Segoe UI,Roboto,Inter,sans-serif; background:#000 url('/assets/prism1.png') repeat; color:var(--text) }
+body{ margin:0; font-family:system-ui,Segoe UI,Roboto,Inter,sans-serif; background:#000; color:var(--text) }
 .container{ max-width:1000px; margin:40px auto; padding:0 16px }
 h1{ text-align:center; margin:18px 0 22px }
 

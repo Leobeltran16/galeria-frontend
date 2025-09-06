@@ -3,6 +3,7 @@ import { uploadImage } from "../services/api";
 
 export default function UploadForm({ onUploaded }) {
   const [file, setFile] = useState(null);
+  const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
 
@@ -11,12 +12,12 @@ export default function UploadForm({ onUploaded }) {
     setLoading(true);
     setMsg("");
     try {
-      const { url } = await uploadImage(file);
+      await uploadImage(file, title);
       setMsg("Imagen subida");
-      onUploaded?.(url);  // el padre puede refrescar la grilla
       setFile(null);
+      setTitle("");
+      onUploaded?.(); // refresca la grilla
     } catch (e) {
-      console.error("uploadImage error:", e);
       setMsg(e?.message || "Error subiendo imagen");
     } finally {
       setLoading(false);
@@ -24,7 +25,14 @@ export default function UploadForm({ onUploaded }) {
   }
 
   return (
-    <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+    <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+      <input
+        type="text"
+        placeholder="Título (opcional)"
+        value={title}
+        onChange={e => setTitle(e.target.value)}
+        style={{ padding: 6, minWidth: 220 }}
+      />
       <input type="file" accept="image/*" onChange={e => setFile(e.target.files[0] || null)} />
       <button disabled={!file || loading} onClick={handleUpload}>
         {loading ? "Subiendo..." : "Subir imagen"}
